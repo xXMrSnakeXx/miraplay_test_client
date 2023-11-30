@@ -5,6 +5,8 @@ import { GamesWrap } from "./Games.styled";
 import Button from "../../components/Button/Button";
 import Filters from "../../components/Filters/Filters";
 import ListGames from "../../components/ListGames/ListGames";
+import { toast } from "react-toastify";
+import Loader from "../../components/Loader/Loader";
 
 const allGenres = [
   "ALL",
@@ -24,8 +26,8 @@ const Games = () => {
   const [page, setPage] = useState(1);
   const [genre, setGenre] = useState("ALL");
   const [isFresh, setIsFresh] = useState(true);
-  const { data } = useGames(page, genre, isFresh);
-  
+  const { data, isError, error, isLoading } = useGames(page, genre, isFresh);
+
   const onLoadMore = () => {
     setPage((prev) => prev + 1);
   };
@@ -56,6 +58,8 @@ const Games = () => {
           />
         )}
       </GamesWrap>
+      {isError && toast.error(error.message)}
+      {isLoading && <Loader />}
     </>
   );
 };

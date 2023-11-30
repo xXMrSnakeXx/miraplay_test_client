@@ -10,6 +10,7 @@ import {
 } from "./LoginForm.styled";
 import { useLogin } from "../../hooks";
 import { toast } from "react-toastify";
+import Loader from "../../components/Loader/Loader";
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -22,7 +23,7 @@ const initialValues = {
   password: "",
 };
 const LoginForm = () => {
-  const { loginMutation, error } = useLogin();
+  const { loginMutation, error, isError, isLoading } = useLogin();
   const handleSubmit = (values, { resetForm }) => {
     loginMutation.mutate(values);
     resetForm();
@@ -55,7 +56,8 @@ const LoginForm = () => {
           </FormLogin>
         </Formik>
       </LoginWrap>
-      {error && toast.error(error)}
+      {isLoading && <Loader />}
+      {isError && toast.error(error)}
     </>
   );
 };

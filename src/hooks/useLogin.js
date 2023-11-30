@@ -23,5 +23,10 @@ export const useLogin = () => {
       setError(data.message);
     },
   });
-  return { loginMutation, error };
+  return {
+    loginMutation,
+    error,
+    isError: loginMutation.isError,
+    isLoading: loginMutation.isLoading,
+  };
 };

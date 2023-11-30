@@ -28,5 +28,7 @@ export const useRegister = () => {
   return {
     registerMutation,
     error,
+    isError: registerMutation.isError,
+    isLoading: registerMutation.isLoading,
   };
 };

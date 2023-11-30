@@ -10,6 +10,7 @@ import {
 import { useRegister } from "../../hooks";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import Loader from "../../components/Loader/Loader";
 const schema = yup.object().shape({
   username: yup
     .string()
@@ -31,7 +32,7 @@ const initialValues = {
 };
 
 const RegisterForm = () => {
-  const { registerMutation, error } = useRegister();
+  const { registerMutation, error, isError, isLoading } = useRegister();
   const handleSubmit = (values, { resetForm }) => {
     registerMutation.mutate(values);
     resetForm();
@@ -68,7 +69,8 @@ const RegisterForm = () => {
           </FormRegister>
         </Formik>
       </RegisterWrap>
-      {error && toast.error(error)}
+      {isLoading && <Loader />}
+      {isError && toast.error(error)}
     </>
   );
 };

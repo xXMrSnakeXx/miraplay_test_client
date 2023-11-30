@@ -6,17 +6,23 @@ import UserMenu from "../UserMenu/UserMenu";
 import Navigation from "../Navigation/Navigation";
 import { useCurrent } from "../../hooks";
 import { Logo } from "../Logo/Logo";
+import { toast } from "react-toastify";
+import Loader from "../Loader/Loader";
 
 const Header = () => {
   const token = useSelector(selectToken);
-  const { data } = useCurrent();
+  const { data, isError, error, isLoading } = useCurrent();
   return (
-    <HeaderContainer>
-      <HeaderWrap>
-        <Logo />
-        {token ? <UserMenu data={data} /> : <Navigation />}
-      </HeaderWrap>
-    </HeaderContainer>
+    <>
+      <HeaderContainer>
+        <HeaderWrap>
+          <Logo />
+          {token ? <UserMenu data={data} /> : <Navigation />}
+        </HeaderWrap>
+      </HeaderContainer>
+      {isError && toast.error(error.message)}
+      {isLoading && <Loader />}
+    </>
   );
 };
 

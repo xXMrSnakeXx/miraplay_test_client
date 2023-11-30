@@ -1,11 +1,13 @@
+import { toast } from "react-toastify";
 import { useLogout } from "../../hooks";
 import Button from "../Button/Button";
+import Loader from "../Loader/Loader";
 import UserMenuMobile from "../UserMenuMobile/UserMenuMobile";
 import { IconsWrap, InfoTitle, InfoWrap, Infotext } from "./UserMenu.styled";
 import { FaUser } from "react-icons/fa";
 import { GrLogout } from "react-icons/gr";
 const UserMenu = ({ data }) => {
-  const { logoutMutation } = useLogout();
+  const { logoutMutation, error, isError, isLoading } = useLogout();
   return (
     <>
       <UserMenuMobile data={data} />
@@ -16,9 +18,11 @@ const UserMenu = ({ data }) => {
           <FaUser fill="white" size="40" />
         </IconsWrap>
         <Button text="Вийти" onClick={() => logoutMutation.mutate()}>
-          <GrLogout/>
+          <GrLogout />
         </Button>
       </InfoWrap>
+      {isLoading && <Loader />}
+      {isError && toast.error(error)}
     </>
   );
 };

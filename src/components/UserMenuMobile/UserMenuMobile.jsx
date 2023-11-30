@@ -3,9 +3,11 @@ import { IconsWrap, LogoutWrap, MobileWrap } from "./UserMenuMobile.styled";
 import { FaUser } from "react-icons/fa";
 import { GrLogout } from "react-icons/gr";
 import { useLogout } from "../../hooks";
+import Loader from "../Loader/Loader";
+import { toast } from "react-toastify";
 const UserMenuMobile = ({ data }) => {
   const [toShow, setToShow] = useState(false);
-  const { logoutMutation } = useLogout();
+  const { logoutMutation, error, isError, isLoading } = useLogout();
   const toogleToShow = () => {
     setToShow((prev) => !prev);
   };
@@ -24,6 +26,8 @@ const UserMenuMobile = ({ data }) => {
           </LogoutWrap>
         </MobileWrap>
       )}
+      {isLoading && <Loader />}
+      {isError && toast.error(error)}
     </>
   );
 };

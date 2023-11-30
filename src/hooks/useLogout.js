@@ -3,9 +3,11 @@ import { selectToken } from "../redux/selectors";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { logoutUser } from "../redux/auth/userSlice";
+import { useState } from "react";
 const BASE_URL_USER = "https://miraplay-94ik.onrender.com/api/users";
 
 export const useLogout = () => {
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const queryClient = useQueryClient();
@@ -22,9 +24,14 @@ export const useLogout = () => {
       dispatch(logoutUser());
       queryClient.clear();
     },
-    onError: (error) => {
-      console.log("ERROR_LOGOUT", error);
+    onError: ({ response: { data } }) => {
+      setError(data.message);
     },
   });
-  return { logoutMutation };
+  return {
+    logoutMutation,
+    error,
+    isError: logoutMutation.isError,
+    isLoading: logoutMutation.isLoading,
+  };
 };
